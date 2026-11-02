@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Labor Day Odds</title>
+  <meta name="description" content="Estimate the chance that labor starts on each day, from your due date, first or later baby, dating method and other factors.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="wrap">
+    <header class="hero">
+      <h1>When will labor start?</h1>
+      <p class="lede">Estimate the chance that labor begins on its own on each day, given that it hasn't started yet. The more you fill in, the sharper the estimate.</p>
+    </header>
+
+    <div class="layout">
+      <form id="form" class="panel form" autocomplete="off" novalidate>
+        <fieldset>
+          <legend>The basics</legend>
+          <label class="field">
+            <span>Due date</span>
+            <input type="date" name="dueDate" required>
+          </label>
+          <label class="field">
+            <span>How was the due date set?</span>
+            <select name="dating">
+              <option value="us1">Ultrasound in the first trimester (before 14 weeks)</option>
+              <option value="ivf">IVF / embryo transfer date</option>
+              <option value="us2">Ultrasound after 14 weeks</option>
+              <option value="lmp">From my last period only</option>
+              <option value="unsure">Not sure</option>
+            </select>
+            <small>Earlier, more precise dating makes the prediction tighter.</small>
+          </label>
+          <label class="field" data-show="dating=lmp">
+            <span>Typical cycle length (days)</span>
+            <input type="number" name="cycle" min="21" max="45" step="1" placeholder="28" inputmode="numeric">
+            <small>Leave at 28 if your provider already adjusted the due date for your cycle.</small>
+          </label>
+          <label class="field">
+            <span>Number of babies</span>
+            <select name="plurality">
+              <option value="1">One</option>
+              <option value="2">Twins</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Calculate as of</span>
+            <input type="date" name="asOf">
+            <small>Defaults to today. Assumes labor hasn't started by the start of this day.</small>
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Your history</legend>
+          <div class="field">
+            <span>Is this your first delivery?</span>
+            <div class="seg" role="radiogroup">
+              <label><input type="radio" name="first" value="yes" checked><span>Yes</span></label>
+              <label><input type="radio" name="first" value="no"><span>No, I've given birth before</span></label>
+            </div>
+          </div>
+          <label class="field" data-show="first=no">
+            <span>How did your most recent labor start?</span>
+            <select name="prevType">
+              <option value="spont">On its own</option>
+              <option value="induced">Induced</option>
+              <option value="cs">Planned C-section (no labor)</option>
+              <option value="unknown">Don't remember</option>
+            </select>
+          </label>
+          <div class="field" data-show="first=no&amp;prevType=spont">
+            <span>At how many weeks did it start?</span>
+            <div class="pair">
+              <label><input type="number" name="prevWeeks" min="22" max="44" placeholder="39" inputmode="numeric"><em>weeks</em></label>
+              <label><input type="number" name="prevDays" min="0" max="6" placeholder="0" inputmode="numeric"><em>days</em></label>
+            </div>
+            <small>Pregnancies tend to partly repeat their timing.</small>
+          </div>
+          <label class="check" data-show="first=no">
+            <input type="checkbox" name="prevPreterm">
+            <span>I've had a baby before 37 weeks</span>
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>About you <span class="opt">optional</span></legend>
+          <label class="field">
+            <span>Your age</span>
+            <input type="number" name="age" min="13" max="60" placeholder="e.g. 31" inputmode="numeric">
+          </label>
+          <label class="field">
+            <span>Pre-pregnancy BMI</span>
+            <select name="bmi">
+              <option value="">Don't know</option>
+              <option value="under">Under 18.5</option>
+              <option value="normal">18.5 – 24.9</option>
+              <option value="over">25 – 29.9</option>
+              <option value="obese">30 – 34.9</option>
+              <option value="obese2">35 or more</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Ancestry</span>
+            <select name="ancestry">
+              <option value="">Prefer not to say</option>
+              <option value="white">White / European</option>
+              <option value="black">Black / African / Caribbean</option>
+              <option value="sasian">South Asian</option>
+              <option value="easian">East or Southeast Asian</option>
+              <option value="hispanic">Hispanic / Latina</option>
+              <option value="other">Other / mixed</option>
+            </select>
+            <small>Average pregnancy length differs by a few days between groups in large studies.</small>
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Right now <span class="opt">optional</span></legend>
+          <div class="field">
+            <span>Latest cervical check (in the past week)</span>
+            <div class="pair">
+              <label>
+                <select name="dilation">
+                  <option value="">Dilation…</option>
+                  <option value="0">Closed (0 cm)</option>
+                  <option value="1">1 cm</option>
+                  <option value="2">2 cm</option>
+                  <option value="3">3 cm</option>
+                  <option value="4">4 cm or more</option>
+                </select>
+              </label>
+              <label>
+                <select name="effacement">
+                  <option value="">Effacement…</option>
+                  <option value="low">0 – 30%</option>
+                  <option value="mid">40 – 50%</option>
+                  <option value="high">60 – 70%</option>
+                  <option value="full">80% or more</option>
+                </select>
+              </label>
+            </div>
+          </div>
+          <label class="check"><input type="checkbox" name="show"><span>Lost mucus plug or bloody show</span></label>
+          <label class="check"><input type="checkbox" name="sweep"><span>Membrane sweep in the last 48 hours</span></label>
+          <label class="check"><input type="checkbox" name="dropped"><span>Baby has "dropped"</span></label>
+          <label class="field">
+            <span>Scheduled induction or C-section date</span>
+            <input type="date" name="inductionDate">
+          </label>
+        </fieldset>
+
+        <button type="button" id="reset" class="link">Clear all answers</button>
+      </form>
+
+      <section class="results" aria-live="polite">
+        <div id="empty" class="panel empty">
+          <h2>Enter your due date to begin</h2>
+          <p>Everything is calculated in your browser. Nothing you enter is sent anywhere.</p>
+        </div>
+
+        <div id="out" hidden>
+          <div id="msg" class="panel note" hidden></div>
+
+          <div class="panel">
+            <p class="status" id="status"></p>
+            <div class="stats" id="stats"></div>
+          </div>
+
+          <div class="panel">
+            <div class="chart-head">
+              <h2>Chance labor starts on each day</h2>
+              <div class="legend">
+                <span><i class="sw bar"></i>That day</span>
+                <span><i class="sw line"></i>By that day</span>
+              </div>
+            </div>
+            <div class="chart" id="chart"></div>
+            <p class="foot" id="chartFoot"></p>
+          </div>
+
+          <div class="panel">
+            <h2>What went into this</h2>
+            <ul class="factors" id="factors"></ul>
+          </div>
+
+          <details class="panel table-wrap">
+            <summary><h2>Day-by-day table</h2></summary>
+            <div class="scroller">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Pregnancy</th>
+                    <th title="Chance labor starts on this day, as of today">That day</th>
+                    <th title="If you reach this day without labor, the chance it starts that day">If you get there</th>
+                    <th title="Chance labor has started by the end of this day">By end of day</th>
+                  </tr>
+                </thead>
+                <tbody id="rows"></tbody>
+              </table>
+            </div>
+          </details>
+        </div>
+
+        <aside class="panel care">
+          <h2>Call your provider or go in if</h2>
+          <ul>
+            <li>your water breaks or you're leaking fluid,</li>
+            <li>you have bright red bleeding,</li>
+            <li>contractions are regular and getting closer (for example, every 5 minutes for an hour),</li>
+            <li>the baby is moving less than usual, or you just feel something is wrong.</li>
+          </ul>
+        </aside>
+
+        <details class="panel method">
+          <summary><h2>How the estimate works</h2></summary>
+          <p>The timing of spontaneous labor is modelled as a smooth distribution of pregnancy length centred a few days past the due date for a first baby (about 40w3d) and a day past it for later babies (about 40w1d), with a small early tail for preterm labor. Its spread depends on how the due date was set: an early ultrasound or IVF date pins it down better than a last period alone.</p>
+          <p>Personal factors nudge the centre by a day or a few: your last labor's timing (pregnancy lengths are moderately correlated, so about a third of the difference carries over), cycle length when dated by period, age, BMI and ancestry. A previous preterm birth enlarges the early tail.</p>
+          <p>Things happening now — cervical dilation and effacement, show, a recent sweep — multiply the day-to-day chance of labor for a week or two, then fade back. The whole picture is then conditioned on labor not having started yet, so the odds update as each day passes. A scheduled induction or C-section ends the forecast on that date.</p>
+          <p>The baseline figures follow large studies of spontaneous labor timing (for example Mittendorf et al. 1990, Smith 2001, Jukic et al. 2013), ethnic differences in gestation length (Patel et al. 2004), recurrence of gestation length between pregnancies, and Cochrane reviews of membrane sweeping. Effect sizes are rounded and simplified, so read the results as a reasonable guide rather than a clinical prediction. Twins in particular are a rough sketch.</p>
+          <p class="fine">Not medical advice. Your provider knows things this page doesn't.</p>
+        </details>
+      </section>
+    </div>
+  </main>
+
+  <div id="tip" class="tip" hidden></div>
+
+  <script src="model.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
